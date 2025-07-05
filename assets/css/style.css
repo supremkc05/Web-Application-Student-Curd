@@ -1,0 +1,128 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #568dc5;
+    padding: 20px;
+}
+
+.register-container {
+    margin-top: 50px;
+}
+
+.register-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(17, 17, 17, 0.1);
+}
+
+/* Header Styles */
+.register-form h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #007bff;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.register-form h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, #007bff 0%, #568dc5 100%);
+    border-radius: 2px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Input Styles */
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(195, 187, 231, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.register-form p {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-form a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.register-form a:hover {
+    text-decoration: underline;
+}
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
