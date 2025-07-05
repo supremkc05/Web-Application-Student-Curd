@@ -2,15 +2,29 @@
 session_start();
 require '../config/database.php';
 
-$error = '';
+$errors = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
     
-    if (empty($email) || empty($password)) {
-        $error = "Please fill in all fields";
-    } else {
+    $errors = array();
+    
+    // Check if all fields are not empty
+    if (empty($email)) {
+        array_push($errors, "Email is required");
+    }
+    if (empty($password)) {
+        array_push($errors, "Password is required");
+    }
+    
+    // Additional validation only if fields are not empty
+    if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        array_push($errors, "Invalid email format");
+    }
+    
+    // Proceed with authentication only if no validation errors
+    if (empty($errors)) {
         try {
             // Initialize Database class and get PDO connection
             $database = new Database();
@@ -27,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: dashboard.php");
                 exit();
             } else {
-                $error = "Invalid email or password";
+                array_push($errors, "Invalid email or password");
             }
         } catch (Exception $e) {
-            $error = "Database connection error: " . $e->getMessage();
+            array_push($errors, "Database error occurred. Please try again later");
         }
     }
 }
@@ -51,11 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="register-form">
                     <h2 class="text-center">Login</h2>
                     
-                    <?php if (!empty($error)): ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?php echo htmlspecialchars($error); ?>
-                        </div>
-                    <?php endif; ?>
+                    <?php
+                    if (count($errors) > 0) {
+                        foreach ($errors as $error) {
+                            echo "<div class='alert alert-danger' role='alert'>" . htmlspecialchars($error) . "</div>";
+                        }
+                    }
+                    ?>
                     
                     <form action="login.php" method="POST">
                         <div class="form-group">

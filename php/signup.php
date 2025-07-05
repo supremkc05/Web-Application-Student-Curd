@@ -23,46 +23,67 @@ if (isset($_SESSION["user"])) {
                     <?php
                     require "../config/database.php";
                     if (isset($_POST["register"])) {
-                        $fullName = $_POST["fullname"];
-                        $email = $_POST["email"];
-                        $password = $_POST["password"];
-                        $confirm_password = $_POST["confirm_password"];
-
-                        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                        $fullName = trim($_POST["fullname"]);
+                        $email = trim($_POST["email"]);
+                        $password = trim($_POST["password"]);
+                        $confirm_password = trim($_POST["confirm_password"]);
                         
                         $errors = array();
                         
-                        if (empty($fullName) OR empty($email) OR empty($password) OR empty($confirm_password)) {
-                            array_push($errors,"All fields are required");
+                        // Check if all fields are not empty
+                        if (empty($fullName)) {
+                            array_push($errors, "Full name is required");
                         }
-                        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            array_push($errors, "Email is not valid");
+                        if (empty($email)) {
+                            array_push($errors, "Email is required");
                         }
-                        if (strlen($password)<8) {
-                            array_push($errors,"Password must be at least 8 characters long");
+                        if (empty($password)) {
+                            array_push($errors, "Password is required");
                         }
-                        if ($password!==$confirm_password) {
-                            array_push($errors,"Password does not match");
+                        if (empty($confirm_password)) {
+                            array_push($errors, "Confirm password is required");
+                        }
+                        
+                        // Additional validation only if fields are not empty
+                        if (!empty($fullName) && !preg_match("/^[a-zA-Z\s]+$/", $fullName)) {
+                            array_push($errors, "Invalid full name. Only letters and spaces are allowed");
+                        }
+                        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            array_push($errors, "Invalid email format");
+                        }
+                        if (!empty($password) && strlen($password) < 8) {
+                            array_push($errors, "Password must be at least 8 characters long");
+                        }
+                        if (!empty($password) && !empty($confirm_password) && $password !== $confirm_password) {
+                            array_push($errors, "Passwords do not match");
                         }
 
                         // Check if email already exists using PDO
-                        try {
-                            $database = new Database();
-                            $pdo = $database->getConnection();
-                            
-                            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-                            $stmt->execute([$email]);
-                            $existingUser = $stmt->fetch();
-                            
-                            if ($existingUser) {
-                                array_push($errors,"Email already exists");
-                            }
-
-                            if (count($errors)>0) {
-                                foreach ($errors as  $error) {
-                                    echo "<div class='alert alert-danger'>$error</div>";
+                        if (empty($errors)) {
+                            try {
+                                $database = new Database();
+                                $pdo = $database->getConnection();
+                                
+                                $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+                                $stmt->execute([$email]);
+                                $existingUser = $stmt->fetch();
+                                
+                                if ($existingUser) {
+                                    array_push($errors, "Email already exists");
                                 }
-                            }else{
+                            } catch (Exception $e) {
+                                array_push($errors, "Database error occurred. Please try again later");
+                            }
+                        }
+
+                        if (count($errors) > 0) {
+                            foreach ($errors as $error) {
+                                echo "<div class='alert alert-danger'>$error</div>";
+                            }
+                        } else {
+                            try {
+                                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                                
                                 // Insert new user using PDO
                                 $stmt = $pdo->prepare("INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)");
                                 $result = $stmt->execute([$fullName, $email, $passwordHash]);
@@ -72,9 +93,9 @@ if (isset($_SESSION["user"])) {
                                 } else {
                                     echo "<div class='alert alert-danger'>Registration failed. Please try again.</div>";
                                 }
+                            } catch (Exception $e) {
+                                echo "<div class='alert alert-danger'>Database error occurred. Please try again later</div>";
                             }
-                        } catch (Exception $e) {
-                            echo "<div class='alert alert-danger'>Database error: " . $e->getMessage() . "</div>";
                         }
                     }
                     ?>

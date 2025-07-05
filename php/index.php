@@ -12,7 +12,7 @@
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">🎓 Student Portal</a>
+            <a class="navbar-brand" href="index.php">Suprem College</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -50,7 +50,7 @@
                 <div class="col-md-4">
                     <div class="card feature-card text-center">
                         <div class="card-body">
-                            <h3>📱 Profile Management</h3>
+                            <h3>Profile Management</h3>
                             <p>Update your personal information, contact details, and academic course information easily.</p>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                 <div class="col-md-4">
                     <div class="card feature-card text-center">
                         <div class="card-body">
-                            <h3>📸 Photo Upload</h3>
+                            <h3>Photo Upload</h3>
                             <p>Upload and manage your profile picture to personalize your student account.</p>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                 <div class="col-md-4">
                     <div class="card feature-card text-center">
                         <div class="card-body">
-                            <h3>🔒 Secure Access</h3>
+                            <h3>Secure Access</h3>
                             <p>Your data is protected with secure authentication and encrypted password storage.</p>
                         </div>
                     </div>
@@ -112,8 +112,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 Student Portal. Created by [Your Name]. All rights reserved.</p>
-            <p>Developed with ❤️ for students</p>
+            <p>&copy; 2025 Student-Portal. Created by Suprem Khatri. All rights reserved.</p>
         </div>
     </footer>
 
